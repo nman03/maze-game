@@ -1,0 +1,92 @@
+/* 
+	Author: Neil Manimtim
+*/
+
+.title {
+	-fx-background-color: skyblue;
+	-fx-alignment: center;
+	-fx-font-size: 130%;
+	-fx-max-width: 500;
+	-fx-pref-height: 30;
+}
+
+.button {
+	-fx-alignment: top-center;
+	-fx-max-width: 500;
+}
+
+.wall {
+	-fx-border-color: black;
+	-fx-background-color: black;
+	-fx-min-width: 20;
+	-fx-min-height: 20;
+}
+
+.space {
+	-fx-border-color: black;
+	-fx-background-color: lightyellow;
+	-fx-min-width: 20;
+	-fx-min-height: 20;
+}
+
+.start {
+	-fx-border-color: black;
+	-fx-background-color: cyan;
+	-fx-min-width: 20;
+	-fx-min-height: 20;
+	-fx-font-weight: bold;
+	-fx-alignment: center;
+}
+
+.end {
+	-fx-border-color: black;
+	-fx-background-color: cyan;
+	-fx-min-width: 20;
+	-fx-min-height: 20;
+	-fx-font-weight: bold;
+	-fx-alignment: center;
+}
+
+.gameStat {
+	-fx-min-width: 200;
+	-fx-border-color: black;
+	-fx-background-color: aqua;
+	-fx-alignment: center;
+	-fx-font-size: 120%;
+	-fx-padding: 0, 20, 0, 20;
+}
+
+.gameWin {
+	-fx-min-width: 200;
+	-fx-border-color: black;
+	-fx-background-color: lime;
+	-fx-alignment: center;
+	-fx-font-size: 120%;
+	-fx-padding: 0, 20, 0, 20;
+}
+
+.gameLoss {
+	-fx-min-width: 200;
+	-fx-border-color: black;
+	-fx-background-color: red;
+	-fx-alignment: center;
+	-fx-font-size: 120%;
+	-fx-padding: 0, 20, 0, 20;
+}
+
+.fool {
+	-fx-border-color: black;
+	-fx-background-color: lime;
+	-fx-font-weight: bold;
+	-fx-alignment: center;
+	-fx-min-width: 20;
+	-fx-min-height: 20;
+}
+
+.bull {
+	-fx-border-color: black;
+	-fx-background-color: red;
+	-fx-min-width: 20;
+	-fx-min-height: 20;
+}
+
