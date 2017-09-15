@@ -12,7 +12,7 @@ public class Main extends Application {
 			MazeGUIPane root = new MazeGUIPane();
 			Scene scene = new Scene(root, 500, 560);
 			scene.getStylesheets().add("styles/style.css"); 
-			primaryStage.setTitle("Lab 10v2");
+			primaryStage.setTitle("Maze Game");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			root.createMap();
