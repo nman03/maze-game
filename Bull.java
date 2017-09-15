@@ -1,11 +1,16 @@
 package data;
 
-public class Bull {
-	private Coordinate bull;
-	
-	public Coordinate makeBull(Coordinate[][] map) {
-		bull = map[1][1];
-		
-		return bull;
+public class Bull extends Coordinate {
+
+	public Bull(int row, int col) {
+		super(row, col, 'B');
+	}
+
+	public void spawn(Coordinate[][] map) {
+		map[1][1].setTileType('B');
+	}
+
+	public void scan(Coordinate[][] map) {
+
 	}
 }
