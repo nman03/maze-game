@@ -1,6 +1,7 @@
 package gui;
 
 import data.Bull;
+import data.Bull.Vision;
 import data.Coordinate;
 import data.Fool;
 import data.StreetMap;
@@ -28,6 +29,7 @@ public class MazeGUIPane extends BorderPane {
 	private Coordinate[][] pamplona;
 	private Fool fool;
 	private Bull bull;
+	private Coordinate lastLocation;
 
 	public void createMap() {
 		pamplona = new StreetMap().makeStreetMap();
@@ -167,7 +169,7 @@ public class MazeGUIPane extends BorderPane {
 	                	moves++;
 	                }
 	                
-	                else if (keyEvent.getCode() == KeyCode.RIGHT && pamplona[n][m + 1].getTileType() != 'W') {
+	                if (keyEvent.getCode() == KeyCode.RIGHT && pamplona[n][m + 1].getTileType() != 'W') {
 	                	labels[n][m].getStyleClass().clear(); 
 	                	labels[n][m].getStyleClass().add("space");
 	                	labels[n][m + 1].getStyleClass().clear(); 
@@ -175,7 +177,8 @@ public class MazeGUIPane extends BorderPane {
 	                	fool.moveRight(pamplona);
 	                	moves++;
 	                }
-	                else if (keyEvent.getCode() == KeyCode.DOWN && pamplona[n + 1][m].getTileType() != 'W') {
+	                
+	                if (keyEvent.getCode() == KeyCode.DOWN && pamplona[n + 1][m].getTileType() != 'W') {
 	                	labels[n][m].getStyleClass().clear(); 
 	                	labels[n][m].getStyleClass().add("space");
 	                	labels[n + 1][m].getStyleClass().clear(); 
@@ -184,7 +187,8 @@ public class MazeGUIPane extends BorderPane {
 	                	checkVictory(fool);
 	                	moves++;
 	                }
-	                else if (keyEvent.getCode() == KeyCode.LEFT && pamplona[n][m - 1].getTileType() != 'W') {
+	                
+	                if (keyEvent.getCode() == KeyCode.LEFT && pamplona[n][m - 1].getTileType() != 'W') {
 	                	labels[n][m].getStyleClass().clear(); 
 	                	labels[n][m].getStyleClass().add("space");
 	                	labels[n][m - 1].getStyleClass().clear(); 
@@ -198,10 +202,57 @@ public class MazeGUIPane extends BorderPane {
                 		bull.spawn(pamplona);
                 		labels[1][1].getStyleClass().clear();
                 		labels[1][1].getStyleClass().add("bull");
-                	} 
+                	}
+	                
 	                else if (moves > 5){
+	                	Vision vision = bull.scan(pamplona);	
+	                	Coordinate location = vision.getLocation();
+	                	int u = bull.getRow();
+	                	int v = bull.getCol();
+	                	
+	                	if (vision.getVisible()) {
+	                		lastLocation = location;
+	                	} else {
+	                		location = lastLocation;
+	                	}
+	                	
+	                	if (location.getRow() != bull.getRow()) {
+	            			int i = location.getRow() - bull.getRow();
+	            			if (i > 0) {
+	            				labels[u][v].getStyleClass().clear(); 
+	                        	labels[u][v].getStyleClass().add("space");
+	                        	labels[u + 1][v].getStyleClass().clear(); 
+	                        	labels[u + 1][v].getStyleClass().add("bull");
+	                        	bull.moveDown(pamplona);
+	            			} else {
+	            				labels[u][v].getStyleClass().clear(); 
+	                        	labels[u][v].getStyleClass().add("space");
+	                        	labels[u - 1][v].getStyleClass().clear(); 
+	                        	labels[u - 1][v].getStyleClass().add("bull");
+	                        	bull.moveUp(pamplona);
+	            			}
+	            		} else if (location.getCol() != bull.getCol()) {
+	            			int j = location.getCol() - bull.getCol();
+	            			if (j > 0) {
+	            				labels[u][v].getStyleClass().clear(); 
+	                        	labels[u][v].getStyleClass().add("space");
+	                        	labels[u][v + 1].getStyleClass().clear(); 
+	                        	labels[u][v + 1].getStyleClass().add("bull");
+	                        	bull.moveRight(pamplona);
+	            			} else {
+	            				labels[u][v].getStyleClass().clear(); 
+	                        	labels[u][v].getStyleClass().add("space");
+	                        	labels[u][v - 1].getStyleClass().clear(); 
+	                        	labels[u][v - 1].getStyleClass().add("bull");
+	                        	bull.moveLeft(pamplona);
+	            			}
+	            		} else {
+	            			
+	            		}
+	                	
+	                	
+         	
                 		checkLoss();
-                		moveBull();
                 		
                 	}
 				}
@@ -220,70 +271,6 @@ public class MazeGUIPane extends BorderPane {
 			labels[fool.getRow()][fool.getCol()].getStyleClass().clear(); 
         	labels[fool.getRow()][fool.getCol()].getStyleClass().add("end");
 			
-		}
-	}
-	
-	private void moveBull() {
-		int i = 0, j = 0, k = 0, l = 0;
-		int n = bull.getRow();
-		int m = bull.getCol();
-		
-		while (pamplona[n][m + k].getTileType() != 'W') {
-			if (pamplona[n][m + k].getTileType() == 'F') {
-				labels[n][m].getStyleClass().clear(); 
-            	labels[n][m].getStyleClass().add("space");
-            	labels[n][m + 1].getStyleClass().clear(); 
-            	labels[n][m + 1].getStyleClass().add("bull");
-            	pamplona[n][m].setTileType(' ');
-            	pamplona[n][m + 1].setTileType('B');
-            	bull.setCol(m + 1);
-            	bull.setRow(n);
-            	checkLoss();
-			}
-			k++;
-		}
-		while (pamplona[n][m - l].getTileType() != 'W') {
-			if (pamplona[n][m - l].getTileType() == 'F') {
-				labels[n][m].getStyleClass().clear(); 
-            	labels[n][m].getStyleClass().add("space");
-            	labels[n][m - 1].getStyleClass().clear(); 
-            	labels[n][m - 1].getStyleClass().add("bull");
-            	pamplona[n][m].setTileType(' ');
-            	pamplona[n][m - 1].setTileType('B');
-            	bull.setCol(m - 1);
-            	bull.setRow(n);
-            	checkLoss();
-			}
-			l++;
-		}
-
-		while (pamplona[n + i][m].getTileType() != 'W') {
-			if (pamplona[n + i][m].getTileType() == 'F') {
-				labels[n][m].getStyleClass().clear(); 
-            	labels[n][m].getStyleClass().add("space");
-            	labels[n + 1][m].getStyleClass().clear(); 
-            	labels[n + 1][m].getStyleClass().add("bull");
-            	pamplona[n][m].setTileType(' ');
-            	pamplona[n + 1][m].setTileType('B');
-            	bull.setRow(n + 1);
-            	bull.setCol(m);
-            	checkLoss();
-			}
-			i++;
-		}
-		while (pamplona[n - j][m].getTileType() != 'W') {
-			if (pamplona[n - j][m].getTileType() == 'F') {
-				labels[n][m].getStyleClass().clear(); 
-            	labels[n][m].getStyleClass().add("space");
-            	labels[n - 1][m].getStyleClass().clear(); 
-            	labels[n - 1][m].getStyleClass().add("bull");
-            	pamplona[n][m].setTileType(' ');
-            	pamplona[n - 1][m].setTileType('B');
-            	bull.setRow(n - 1);
-            	bull.setCol(m);
-            	checkLoss();
-			}
-			j++;
 		}
 	}	
 	
